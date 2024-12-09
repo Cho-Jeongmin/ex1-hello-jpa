@@ -2,8 +2,15 @@ package hellojpa;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "MEMBER")
@@ -13,29 +20,23 @@ public class Member {
   private Long id;
 
   @Column(name = "name")
-  private String name;
+  private String username;
 
-  public Member() {
-  }
+  private Integer age;
 
-  public Member(Long id, String name) {
-    this.id = id;
-    this.name = name;
-  }
+  @Enumerated(EnumType.STRING) // ORDINAL 사용 금지
+  private RoleType roleType;
 
-  public Long getId() {
-    return id;
-  }
+  @Temporal(TemporalType.TIMESTAMP) // 날짜+시간
+  private Date createdDate; // Java8 이전
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+  private LocalDateTime createdDate2; // Java8 이후
 
-  public String getName() {
-    return name;
-  }
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date lastModifiedDate;
 
-  public void setName(String name) {
-    this.name = name;
-  }
+  @Lob
+  private String description;
+
+  //Getter, Setter...
 }

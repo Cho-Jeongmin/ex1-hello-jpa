@@ -20,37 +20,6 @@ public class JpaMain {
     tx.begin(); // 항상 트랜젝션 안에서 변경
 
     try {
-      // 멤버 저장
-      Member member1 = new Member();
-      member1.setId(1L);
-      member1.setName("Jamie");
-
-      Member member2 = new Member();
-      member2.setId(2L);
-      member2.setName("Flora");
-
-      em.persist(member1);
-      em.persist(member2);
-
-      // 멤버 리스트 조회
-      List<Member> memberList = em.createQuery("select m from Member as m",
-              Member.class)
-          .setFirstResult(0)
-          .setMaxResults(2) // 페이징(0번째부터 2개 가져오라는 뜻)
-          .getResultList();
-
-      for (Member member : memberList) {
-        System.out.println("member = " + member.getName());
-      }
-
-      // 멤버 조회
-      Member findMember = em.find(Member.class, 1L);
-
-      // 멤버 수정
-      findMember.setName("Jeongmin");
-
-      // 멤버 삭제
-      em.remove(findMember);
 
       tx.commit(); // 성공시 커밋
 
