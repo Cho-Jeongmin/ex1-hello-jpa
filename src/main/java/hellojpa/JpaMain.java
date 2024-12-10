@@ -21,20 +21,17 @@ public class JpaMain {
 
     try {
 
-      Member member1 = new Member();
-      member1.setUsername("A");
+      Team team = new Team();
+      team.setName("teamA");
+      em.persist(team);
 
-      Member member2 = new Member();
-      member2.setUsername("B");
+      Member member = new Member();
+      member.setUsername("member1");
+      member.setTeamId(team.getId()); // member1을 teamA에 소속 시키기(객체지향적이지 않음)
+      em.persist(member);
 
-      Member member3 = new Member();
-      member3.setUsername("C");
-
-      System.out.println("===============");
-      em.persist(member1);
-      em.persist(member2);
-      em.persist(member3);
-      System.out.println("===============");
+      Member findMember = em.find(Member.class, member.getId());
+      em.find(Team.class, findMember.getTeamId()); // member1의 팀을 찾기(객체지향적이지 않음)
 
       tx.commit(); // 성공시 커밋
 
