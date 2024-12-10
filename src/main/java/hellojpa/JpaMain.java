@@ -27,11 +27,15 @@ public class JpaMain {
 
       Member member = new Member();
       member.setUsername("member1");
-      member.setTeamId(team.getId()); // member1을 teamA에 소속 시키기(객체지향적이지 않음)
+      member.setTeam(team); // member1을 teamA에 소속 시키기(객체지향적!)
       em.persist(member);
 
+      em.flush();
+      em.clear();
+
       Member findMember = em.find(Member.class, member.getId());
-      em.find(Team.class, findMember.getTeamId()); // member1의 팀을 찾기(객체지향적이지 않음)
+      Team findTeam = findMember.getTeam();// member1의 팀을 찾기(객체지향적!)
+      System.out.println("findTeam's Name = " + findTeam.getName());
 
       tx.commit(); // 성공시 커밋
 
