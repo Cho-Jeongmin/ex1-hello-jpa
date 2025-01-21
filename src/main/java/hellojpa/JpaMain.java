@@ -26,23 +26,19 @@ public class JpaMain {
 
       Member member = new Member();
       member.setUsername("member1");
-      member.setTeam(team); // member에만 team을 넣어주고,
+      member.changeTeam(team); // 연관관계 편의 메소드(내부적으로 양쪽에 다 값을 넣어줌)
       em.persist(member);
-
-      // team.getMembers().add(member); // team에는 member를 넣지 말아보자.
 
       // em.flush();
       // em.clear();
 
-      // 만약 flush를 안 할 경우,
+      // 만약 flush를 안 하더라도
 
-      Team findTeam = em.find(Team.class, team.getId()); // 1차캐시에서 team을 조회하게 되고,
-      List<Member> members = findTeam.getMembers(); // team의 members를 조회해보면 아무것도 안나오게 된다.
+      Team findTeam = em.find(Team.class, team.getId());
+      List<Member> members = findTeam.getMembers(); // team의 members를 조회해보면 잘 조회된다.
       for (Member m : members) {
-        System.out.println("m = " + m.getUsername()); // (아무것도 출력 안됨)
+        System.out.println("m = " + m.getUsername()); // 잘 출력됨
       }
-
-      // 결론적으로, 양방향으로 값을 다 넣어주는게 좋다. (team에도 member를 넣어주자)
 
       tx.commit(); // 성공시 커밋
 
