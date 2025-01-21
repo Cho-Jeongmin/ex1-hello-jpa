@@ -20,19 +20,29 @@ public class JpaMain {
     tx.begin(); // 항상 트랜젝션 안에서 변경
 
     try {
+      Team team = new Team();
+      team.setName("teamA");
+      em.persist(team);
 
       Member member = new Member();
       member.setUsername("member1");
+      member.setTeam(team); // member에만 team을 넣어주고,
       em.persist(member);
 
-      Team team = new Team();
-      team.setName("teamA");
-      team.getMembers()
-          .add(member); // 연관관계의 주인은 Member인데, 주인이 아닌 Team에다가 member를 추가해봤자 아무 소용 없음(외래키 없데이트 안됨)
-      em.persist(team);
+      // team.getMembers().add(member); // team에는 member를 넣지 말아보자.
 
-      em.flush();
-      em.clear();
+      // em.flush();
+      // em.clear();
+
+      // 만약 flush를 안 할 경우,
+
+      Team findTeam = em.find(Team.class, team.getId()); // 1차캐시에서 team을 조회하게 되고,
+      List<Member> members = findTeam.getMembers(); // team의 members를 조회해보면 아무것도 안나오게 된다.
+      for (Member m : members) {
+        System.out.println("m = " + m.getUsername()); // (아무것도 출력 안됨)
+      }
+
+      // 결론적으로, 양방향으로 값을 다 넣어주는게 좋다. (team에도 member를 넣어주자)
 
       tx.commit(); // 성공시 커밋
 
