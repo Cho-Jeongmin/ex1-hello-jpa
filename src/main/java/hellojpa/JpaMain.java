@@ -34,8 +34,11 @@ public class JpaMain {
       em.clear();
 
       Member findMember = em.find(Member.class, member.getId());
-      Team findTeam = findMember.getTeam();// member1의 팀을 찾기(객체지향적!)
-      System.out.println("findTeam's Name = " + findTeam.getName());
+      List<Member> members = findMember.getTeam().getMembers(); // 양방향 연관관계
+
+      for (Member m : members) {
+        System.out.println("m = " + m.getUsername());
+      }
 
       tx.commit(); // 성공시 커밋
 

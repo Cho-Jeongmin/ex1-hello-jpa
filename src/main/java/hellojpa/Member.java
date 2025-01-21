@@ -26,7 +26,7 @@ public class Member {
 //  private Long teamId;
 
   @ManyToOne(fetch = FetchType.LAZY)// 멤버 조회할 때 팀은 조회 안하고, 진짜 팀이 필요할 때 조회함. 즉 select 쿼리를 분리.(지연로딩)
-  @JoinColumn(name = "TEAM_ID")
+  @JoinColumn(name = "TEAM_ID") // 외래키가 있는 곳이 연관관계의 주인
   private Team team;
 
   public Long getId() {
