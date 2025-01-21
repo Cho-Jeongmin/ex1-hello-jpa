@@ -21,24 +21,18 @@ public class JpaMain {
 
     try {
 
-      Team team = new Team();
-      team.setName("teamA");
-      em.persist(team);
-
       Member member = new Member();
       member.setUsername("member1");
-      member.setTeam(team); // member1을 teamA에 소속 시키기(객체지향적!)
       em.persist(member);
+
+      Team team = new Team();
+      team.setName("teamA");
+      team.getMembers()
+          .add(member); // 연관관계의 주인은 Member인데, 주인이 아닌 Team에다가 member를 추가해봤자 아무 소용 없음(외래키 없데이트 안됨)
+      em.persist(team);
 
       em.flush();
       em.clear();
-
-      Member findMember = em.find(Member.class, member.getId());
-      List<Member> members = findMember.getTeam().getMembers(); // 양방향 연관관계
-
-      for (Member m : members) {
-        System.out.println("m = " + m.getUsername());
-      }
 
       tx.commit(); // 성공시 커밋
 
