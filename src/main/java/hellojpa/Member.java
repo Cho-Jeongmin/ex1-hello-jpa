@@ -54,4 +54,13 @@ public class Member {
     team.getMembers().add(this);
     // 양방향으로 값을 넣어주자.
   }
+
+  @Override
+  public String toString() {
+    return "Member{" +
+        "id=" + id +
+        ", username='" + username + '\'' +
+        ", team=" + team + // 여기서 Team의 toString이 호출됨(무한 루프)
+        '}';
+  }
 }

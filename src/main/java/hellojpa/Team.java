@@ -40,4 +40,13 @@ public class Team {
   public List<Member> getMembers() {
     return members;
   }
+
+  @Override
+  public String toString() {
+    return "Team{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", members=" + members + // 여기서 Member의 toString이 호출됨(무한 루프)
+        '}';
+  }
 }
