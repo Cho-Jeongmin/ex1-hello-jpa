@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,8 @@ public class Team {
 
   private String name;
 
-  @OneToMany(mappedBy = "team") // 연관관계의 주인 아님
+  @OneToMany
+  @JoinColumn(name = "TEAM_ID") // 연관관계의 주인(반대편 테이블의 외래키를 관리)
   private List<Member> members = new ArrayList<>();
 
   public Long getId() {
@@ -41,12 +43,7 @@ public class Team {
     return members;
   }
 
-  @Override
-  public String toString() {
-    return "Team{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", members=" + members + // 여기서 Member의 toString이 호출됨(무한 루프)
-        '}';
+  public void setMembers(List<Member> members) {
+    this.members = members;
   }
 }
