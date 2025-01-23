@@ -6,7 +6,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.util.concurrent.locks.Lock;
 
 
 @Entity
@@ -24,6 +26,10 @@ public class Member {
   @ManyToOne
   @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
   private Team team; // 연관관계의 주인 아님(읽기 전용)
+
+  @OneToOne
+  @JoinColumn(name = "LOCKER_ID")
+  private Locker locker;
 
   public Long getId() {
     return id;
