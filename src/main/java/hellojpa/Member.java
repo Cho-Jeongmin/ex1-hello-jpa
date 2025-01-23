@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 
@@ -18,6 +20,10 @@ public class Member {
 
   @Column(name = "USERNAME")
   private String username;
+
+  @ManyToOne
+  @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
+  private Team team; // 연관관계의 주인 아님(읽기 전용)
 
   public Long getId() {
     return id;
