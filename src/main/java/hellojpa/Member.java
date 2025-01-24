@@ -5,9 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 
 
@@ -30,6 +34,10 @@ public class Member {
   @OneToOne
   @JoinColumn(name = "LOCKER_ID")
   private Locker locker;
+
+  @ManyToMany
+  @JoinTable(name = "MEMBER_PRODUCT")
+  private List<Product> products = new ArrayList<>();
 
   public Long getId() {
     return id;
