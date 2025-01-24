@@ -8,6 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
@@ -35,9 +36,8 @@ public class Member {
   @JoinColumn(name = "LOCKER_ID")
   private Locker locker;
 
-  @ManyToMany
-  @JoinTable(name = "MEMBER_PRODUCT")
-  private List<Product> products = new ArrayList<>();
+  @OneToMany(mappedBy = "member")
+  private List<MemberProduct> memberProducts = new ArrayList<>();
 
   public Long getId() {
     return id;
