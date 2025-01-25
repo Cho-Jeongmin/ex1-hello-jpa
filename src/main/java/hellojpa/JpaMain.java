@@ -19,14 +19,16 @@ public class JpaMain {
     tx.begin(); // 항상 트랜젝션 안에서 변경
 
     try {
-      Member member = new Member();
-      member.setUsername("member1");
-      em.persist(member);
+      Movie movie = new Movie();
+      movie.setName("바람과 함께 사라지다");
+      movie.setDirector("aaaa");
+      movie.setActor("bbbb");
+      em.persist(movie);
 
-      Team team = new Team();
-      team.setName("teamA");
-      team.getMembers().add(member);
-      em.persist(team);
+      em.flush();
+      em.clear();
+
+      Movie findMovie = em.find(Movie.class, movie.getId());
 
       tx.commit(); // 성공시 커밋
 
