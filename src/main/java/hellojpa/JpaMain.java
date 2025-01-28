@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
+import java.time.LocalDateTime;
 
 public class JpaMain {
 
@@ -19,16 +20,15 @@ public class JpaMain {
     tx.begin(); // 항상 트랜젝션 안에서 변경
 
     try {
-      Movie movie = new Movie();
-      movie.setName("바람과 함께 사라지다");
-      movie.setDirector("aaaa");
-      movie.setActor("bbbb");
-      em.persist(movie);
+      Member member = new Member();
+      member.setUsername("user1");
+      member.setCreatedBy("Cho");
+      member.setCreatedDate(LocalDateTime.now());
+
+      em.persist(member);
 
       em.flush();
       em.clear();
-
-      Movie findMovie = em.find(Movie.class, movie.getId());
 
       tx.commit(); // 성공시 커밋
 
