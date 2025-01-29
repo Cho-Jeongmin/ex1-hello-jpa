@@ -22,13 +22,25 @@ public class JpaMain {
     try {
       Member member = new Member();
       member.setUsername("user1");
-      member.setCreatedBy("Cho");
-      member.setCreatedDate(LocalDateTime.now());
 
       em.persist(member);
 
       em.flush();
       em.clear();
+
+      Member findMember = em.getReference(Member.class, member.getId()); // 이 시점엔 select 쿼리 안나감
+      System.out.println("findMember = " + findMember.getClass()); // findMember는 프록시 엔티티(가짜 엔티티)
+
+      System.out.println("member.id = " + findMember.getId());
+      System.out.println(
+          "member.username = "
+              + findMember.getUsername()); // 이 시점에 select 쿼리 나가서 실제 엔티티 가져오고, 프록시를 통해 접근 가능
+
+      System.out.println(
+          "findMember 초기화 여부: " + emf.getPersistenceUnitUtil()
+              .isLoaded(findMember)); // 프록시 인스턴스의  초기화 여부 확인
+
+      org.hibernate.Hibernate.initialize(findMember); // 프록시 강제 초기화
 
       tx.commit(); // 성공시 커밋
 
