@@ -20,26 +20,20 @@ public class JpaMain {
     tx.begin(); // 항상 트랜젝션 안에서 변경
 
     try {
-      Team team = new Team();
-      team.setName("teamA");
-      em.persist(team);
+      Parent parent = new Parent();
 
-      Member member = new Member();
-      member.setUsername("user1");
-      em.persist(member);
+      Child child1 = new Child();
+      Child child2 = new Child();
 
-      member.setTeam(team);
+      parent.addChild(child1);
+      parent.addChild(child2);
 
-      em.flush();
-      em.clear();
+      em.persist(parent);
+//      em.persist(child1); // 원래는 이렇게 child도 persist 해줘야 하지만
+//      em.persist(child2);
 
-      Member m = em.find(Member.class, member.getId()); // 지연로딩
-
-      System.out.println("m.getTeam().getClass() = " + m.getTeam().getClass()); // team은 프록시
-
-      System.out.println("========");
-      m.getTeam().getName(); // 프록시 초기화
-      System.out.println("========");
+      // cascade를 all로 설정하면 parent가 persist 될 때 child도 자동으로 persist 됨
+      // 또한, parent가 삭제될 때 child도 삭제됨
 
       tx.commit(); // 성공시 커밋
 
