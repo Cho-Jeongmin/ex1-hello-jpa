@@ -35,6 +35,13 @@ public class JpaMain {
       // cascade를 all로 설정하면 parent가 persist 될 때 child도 자동으로 persist 됨
       // 또한, parent가 삭제될 때 child도 삭제됨
 
+      em.flush();
+      em.clear();
+
+      Parent findParent = em.find(Parent.class, parent.getId());
+      findParent.getChildList()
+          .remove(0); // Parent와의 연관관계가 끊어져서 고아객체가 되었기 때문에 Child한테 DELETE 쿼리 나감
+
       tx.commit(); // 성공시 커밋
 
     } catch (Exception e) {
