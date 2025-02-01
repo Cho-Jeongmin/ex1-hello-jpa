@@ -2,6 +2,7 @@ package hellojpa;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -28,11 +29,11 @@ public class Member extends BaseEntity {
   @Column(name = "USERNAME")
   private String username;
 
-  @ManyToOne
-  @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
-  private Team team; // 연관관계의 주인 아님(읽기 전용)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "TEAM_ID")
+  private Team team;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "LOCKER_ID")
   private Locker locker;
 
@@ -53,5 +54,13 @@ public class Member extends BaseEntity {
 
   public void setUsername(String username) {
     this.username = username;
+  }
+
+  public Team getTeam() {
+    return team;
+  }
+
+  public void setTeam(Team team) {
+    this.team = team;
   }
 }
