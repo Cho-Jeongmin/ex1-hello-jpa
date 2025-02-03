@@ -20,27 +20,6 @@ public class JpaMain {
     tx.begin(); // 항상 트랜젝션 안에서 변경
 
     try {
-      Parent parent = new Parent();
-
-      Child child1 = new Child();
-      Child child2 = new Child();
-
-      parent.addChild(child1);
-      parent.addChild(child2);
-
-      em.persist(parent);
-//      em.persist(child1); // 원래는 이렇게 child도 persist 해줘야 하지만
-//      em.persist(child2);
-
-      // cascade를 all로 설정하면 parent가 persist 될 때 child도 자동으로 persist 됨
-      // 또한, parent가 삭제될 때 child도 삭제됨
-
-      em.flush();
-      em.clear();
-
-      Parent findParent = em.find(Parent.class, parent.getId());
-      findParent.getChildList()
-          .remove(0); // Parent와의 연관관계가 끊어져서 고아객체가 되었기 때문에 Child한테 DELETE 쿼리 나감
 
       tx.commit(); // 성공시 커밋
 
