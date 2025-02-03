@@ -21,6 +21,19 @@ public class JpaMain {
 
     try {
 
+      Member member = new Member();
+
+      member.setUsername("조정민");
+      member.setLastModifiedBy("관리자1");
+      member.setLastModifiedDate(LocalDateTime.now());
+      member.setCreatedBy("관리자1");
+      member.setCreatedDate(LocalDateTime.now());
+      member.setHomeAddress(new Address("서울시", "고척로52길 48", "08230"));
+      member.setWorkPeriod(new Period(LocalDateTime.of(2023, 3, 1, 9, 30, 0),
+          LocalDateTime.of(2023, 6, 30, 6, 30, 0)));
+
+      em.persist(member);
+
       tx.commit(); // 성공시 커밋
 
     } catch (Exception e) {
