@@ -5,19 +5,21 @@ public class ValueMain {
   public static void main(String[] args) {
 
     int a = 10;
-    int b = a;
+    int b = 10;
 
-    a = 20;
+    System.out.println("a == b = " + (a == b)); // true
 
-    System.out.println("a = " + a); // 20
-    System.out.println("b = " + b); // 10
+    Address address1 = new Address("서울시", "고척로52길 48", "08230");
+    Address address2 = new Address("서울시", "고척로52길 48", "08230");
 
-    // primitive 값 타입은 공유되지 않는다. 따라서 사이드 이펙트도 없다.
+    System.out.println(
+        "address1 == address2 = " + (address1 == address2)); // false (다른 참조값을 가지기 때문)
 
-    Integer c = new Integer(10);
-    Integer d = c; // c가 공유됨. 즉 참조값이 들어감.
+    System.out.println("address1.equals(address2) = " + address1.equals(
+        address2)); // true (Address 안에 equals 메소드를 오버라이드 해놨기 때문)
 
-    // c.setValue(10); // 하지만 Integer나 String 클래스는 이런식으로 속성값을 바꿀 수 있는 방법이 없기 때문에 사이드 이펙트는 없음.
+    // 객체는 항상 equals로 비교해야 한다.
+
   }
 
 }
