@@ -21,19 +21,22 @@ public class JpaMain {
 
     try {
       Address address = new Address("서울시", "고척로52길 48",
-          "08230"); // 하나의 임베디드 타입을 여러 멤버 엔티티에서 공유하는 경우
+          "08230");
 
       Member member1 = new Member();
       member1.setUsername("조정민");
       member1.setHomeAddress(address);
       em.persist(member1);
 
+      Address copyAddress = new Address(address.getCity(), address.getStreet(),
+          address.getZipcode());  // 임베디드 타입의 값을 복사해서 사용해야 함
+
       Member member2 = new Member();
       member2.setUsername("한나현");
-      member2.setHomeAddress(address);
+      member2.setHomeAddress(copyAddress);
       em.persist(member2);
 
-      member2.getHomeAddress().setCity("서산시"); // member1과 member2 모두 서산시로 바뀌어 버림
+      member2.getHomeAddress().setCity("서산시"); // member2만 서산시로 바뀜
 
       tx.commit(); // 성공시 커밋
 
