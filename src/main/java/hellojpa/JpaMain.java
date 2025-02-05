@@ -20,19 +20,20 @@ public class JpaMain {
     tx.begin(); // 항상 트랜젝션 안에서 변경
 
     try {
+      Address address = new Address("서울시", "고척로52길 48",
+          "08230"); // 하나의 임베디드 타입을 여러 멤버 엔티티에서 공유하는 경우
 
-      Member member = new Member();
+      Member member1 = new Member();
+      member1.setUsername("조정민");
+      member1.setHomeAddress(address);
+      em.persist(member1);
 
-      member.setUsername("조정민");
-      member.setLastModifiedBy("관리자1");
-      member.setLastModifiedDate(LocalDateTime.now());
-      member.setCreatedBy("관리자1");
-      member.setCreatedDate(LocalDateTime.now());
-      member.setHomeAddress(new Address("서울시", "고척로52길 48", "08230"));
-      member.setWorkPeriod(new Period(LocalDateTime.of(2023, 3, 1, 9, 30, 0),
-          LocalDateTime.of(2023, 6, 30, 6, 30, 0)));
+      Member member2 = new Member();
+      member2.setUsername("한나현");
+      member2.setHomeAddress(address);
+      em.persist(member2);
 
-      em.persist(member);
+      member2.getHomeAddress().setCity("서산시"); // member1과 member2 모두 서산시로 바뀌어 버림
 
       tx.commit(); // 성공시 커밋
 
