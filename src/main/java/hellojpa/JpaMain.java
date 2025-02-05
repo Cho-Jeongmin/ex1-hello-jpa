@@ -28,15 +28,15 @@ public class JpaMain {
       member1.setHomeAddress(address);
       em.persist(member1);
 
-      Address copyAddress = new Address(address.getCity(), address.getStreet(),
-          address.getZipcode());  // 임베디드 타입의 값을 복사해서 사용해야 함
-
       Member member2 = new Member();
       member2.setUsername("한나현");
-      member2.setHomeAddress(copyAddress);
+      member2.setHomeAddress(address);
       em.persist(member2);
 
-      member2.getHomeAddress().setCity("서산시"); // member2만 서산시로 바뀜
+      // member2.getHomeAddress().setCity("서산시"); // Address는 변경 불가능한 불변 객체. 객체 공유로 인한 사이드 이펙트 방지.
+
+      member2.setHomeAddress(new Address("서산시", address.getStreet(),
+          address.getZipcode())); // 변경하고 싶다면 아예 새로운 Address 객체를 만들어서 넣어주면 됨.
 
       tx.commit(); // 성공시 커밋
 

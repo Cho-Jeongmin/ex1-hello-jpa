@@ -28,23 +28,17 @@ public class Address {
     return city;
   }
 
-  public void setCity(String city) {
-    this.city = city;
-  }
 
   public String getStreet() {
     return street;
   }
 
-  public void setStreet(String street) {
-    this.street = street;
-  }
 
   public String getZipcode() {
     return zipcode;
   }
 
-  public void setZipcode(String zipcode) {
-    this.zipcode = zipcode;
-  }
+  // setter를 모두 지워서 address를 불변객체로 만들면 객체 공유로 인한 사이드이펙트를 방지할 수 있음.
+  // setter를 지우지 않고 private으로 만들어도 됨.
+
 }
