@@ -31,8 +31,10 @@ public class JpaMain {
       member.getFavoriteFoods().add("족발");
       member.getFavoriteFoods().add("치킨");
 
-      member.getAddressHistory().add(new Address("Greeley", "12th Ave Ct", "2300"));
-      member.getAddressHistory().add(new Address("서울시", "고척로52길 48", "08230"));
+      member.getAddressHistory().add(new AddressEntity("Greeley", "12th Ave Ct", "2300"));
+      member.getAddressHistory().add(new AddressEntity("서울시", "고척로52길 48", "08230"));
+      // 실무에서는 이런식으로 값 타입을 엔티티로 승격시켜서 사용
+      // 값 타입 컬렉션은 진짜 단순한 경우에만 사용 (ex: 피자, 치킨 중에서 체크박스로 선택)
 
       em.persist(member);
 
@@ -44,9 +46,9 @@ public class JpaMain {
       Member findMember = em.find(Member.class, member.getId());
 
       System.out.println("=============");
-      List<Address> addressHistory = findMember.getAddressHistory();
-      for (Address address : addressHistory) {
-        System.out.println("address = " + address.getCity());
+      List<AddressEntity> addressHistory = findMember.getAddressHistory();
+      for (AddressEntity address : addressHistory) {
+        System.out.println("address = " + address.getAddress().getCity());
       }
 
       System.out.println("=============");
@@ -61,12 +63,9 @@ public class JpaMain {
       findMember.getFavoriteFoods().add("파스타");
 
       // 서울시 -> 서산시
-      findMember.getAddressHistory()
-          .remove(new Address("서울시", "고척로52길 48", "08230")); // equals로 비교하여 같으면 삭제됨
-      findMember.getAddressHistory().add(new Address("서산시", "고척로52길 48", "08230"));
-
-      // DB에서 member와 관련된 모든 address를 지우고, 컬렉션에 남은 값들을 다시 인서트 함
-      // -> 실무에서 사용 X
+//      findMember.getAddressHistory()
+//          .remove(new Address("서울시", "고척로52길 48", "08230")); // equals로 비교하여 같으면 삭제됨
+//      findMember.getAddressHistory().add(new Address("서산시", "고척로52길 48", "08230"));
 
       tx.commit(); // 성공시 커밋
 
