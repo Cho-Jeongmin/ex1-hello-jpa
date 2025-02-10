@@ -5,7 +5,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
 
@@ -20,23 +21,52 @@ public class JpaMain {
     tx.begin(); // 항상 트랜젝션 안에서 변경
 
     try {
-      Address address = new Address("서울시", "고척로52길 48",
-          "08230");
 
-      Member member1 = new Member();
-      member1.setUsername("조정민");
-      member1.setHomeAddress(address);
-      em.persist(member1);
+      // 저장
+      Member member = new Member();
+      member.setUsername("조정민");
+      member.setHomeAddress(new Address("North Parramatta", "74 Grose St", "2151"));
 
-      Member member2 = new Member();
-      member2.setUsername("한나현");
-      member2.setHomeAddress(address);
-      em.persist(member2);
+      member.getFavoriteFoods().add("피자");
+      member.getFavoriteFoods().add("족발");
+      member.getFavoriteFoods().add("치킨");
 
-      // member2.getHomeAddress().setCity("서산시"); // Address는 변경 불가능한 불변 객체. 객체 공유로 인한 사이드 이펙트 방지.
+      member.getAddressHistory().add(new Address("Greeley", "12th Ave Ct", "2300"));
+      member.getAddressHistory().add(new Address("서울시", "고척로52길 48", "08230"));
 
-      member2.setHomeAddress(new Address("서산시", address.getStreet(),
-          address.getZipcode())); // 변경하고 싶다면 아예 새로운 Address 객체를 만들어서 넣어주면 됨.
+      em.persist(member);
+
+      em.flush();
+      em.clear();
+
+      // 조회
+      System.out.println("=============");
+      Member findMember = em.find(Member.class, member.getId());
+
+      System.out.println("=============");
+      List<Address> addressHistory = findMember.getAddressHistory();
+      for (Address address : addressHistory) {
+        System.out.println("address = " + address.getCity());
+      }
+
+      System.out.println("=============");
+      Set<String> favoriteFoods = findMember.getFavoriteFoods();
+      for (String favoriteFood : favoriteFoods) {
+        System.out.println("favoriteFood = " + favoriteFood);
+      }
+
+      // 수정
+      // 치킨 -> 파스타
+      findMember.getFavoriteFoods().remove("치킨");
+      findMember.getFavoriteFoods().add("파스타");
+
+      // 서울시 -> 서산시
+      findMember.getAddressHistory()
+          .remove(new Address("서울시", "고척로52길 48", "08230")); // equals로 비교하여 같으면 삭제됨
+      findMember.getAddressHistory().add(new Address("서산시", "고척로52길 48", "08230"));
+
+      // DB에서 member와 관련된 모든 address를 지우고, 컬렉션에 남은 값들을 다시 인서트 함
+      // -> 실무에서 사용 X
 
       tx.commit(); // 성공시 커밋
 
